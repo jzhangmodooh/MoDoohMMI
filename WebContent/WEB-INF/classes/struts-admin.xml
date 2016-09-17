@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC
+   "-//Apache Software Foundation//DTD Struts Configuration 2.0//EN"
+   "http://struts.apache.org/dtds/struts-2.0.dtd">
+<struts>  
+    <package name="admin" extends="struts-default">  
+    	<interceptors>
+      	<!-- authentication Interceptor -->
+             <interceptor name="authenticationInterceptor" class="com.ssh.filters.AdminAuthenticationFilter" />
+              <interceptor-stack name="defualtSecurityStackWithAuthentication">
+                <interceptor-ref name="defaultStack" />
+                <interceptor-ref name="authenticationInterceptor" />
+              </interceptor-stack>
+        </interceptors>
+        <default-interceptor-ref name="defualtSecurityStackWithAuthentication" />
+        <!--global Result, session failure result -->
+        <global-results>
+              <result name="tologin">/WEB-INF/content/login.jsp</result>
+        </global-results>
+        <action name="dispatcherAction" class="com.ssh.action.admin.DispatcherAction">
+       		<result name="index">/WEB-INF/content/admin/index.jsp</result>  
+            <result name="adminLogin">/WEB-INF/content/admin/login.jsp</result>
+         <!--   <result name="addDeviceModel">/WEB-INF/content/admin/addDeviceModel.jsp</result>-->
+        	<result name="viewDeviceModel">/WEB-INF/content/admin/viewDeviceModel.jsp</result>  
+            <result name="viewUser">/WEB-INF/content/admin/viewUser.jsp</result>
+            <result name="addUser">/WEB-INF/content/admin/addUser.jsp</result>
+            <result name="addOrderRecord">/WEB-INF/content/admin/addOrderRecord.jsp</result>
+            <result name="addDeviceImage">/WEB-INF/content/admin/addDeviceImage.jsp</result>
+            <result name="getUserById">/WEB-INF/content/admin/getUserTest.jsp</result>
+        </action> 
+        <action name="logoutAdminAction" class="com.ssh.action.admin.LogoutAdminAction" method="execute">  
+            <result name="input">/WEB-INF/content/admin/index.jsp</result>
+            <result name="success">/WEB-INF/content/index.jsp</result>
+            <result name="error">/WEB-INF/content/admin/error.jsp</result>  
+        </action>
+        <action name="viewDeviceModelAction" class="com.ssh.action.admin.ViewDeviceModelAction" method="execute"> 
+        	<result>/WEB-INF/content/admin/viewDeviceModel.jsp</result> 
+            <result name="input">/WEB-INF/content/admin/viewDeviceModel.jsp</result>
+            <result name="error">/WEB-INF/content/admin/error.jsp</result>  
+        </action> 
+        <action name="addDeviceModelAction" class="com.ssh.action.admin.AddDeviceModelAction" method="execute">  
+            <result name="input">/WEB-INF/content/admin/addDeviceModel.jsp</result>
+            <result name="success"  type="chain">viewDeviceModelAction</result>
+            <result name="error">/WEB-INF/content/admin/error.jsp</result>  
+            <result name="invalid.token">/WEB-INF/content/admin/duplicateSubmit.jsp</result> 
+            <interceptor-ref name="defaultStack"></interceptor-ref>
+        	<interceptor-ref name="token"></interceptor-ref>
+        </action> 
+        <action name="editDeviceModelAction" class="com.ssh.action.admin.EditDeviceModelAction" method="execute">  
+            <result name="success"  type="chain">viewDeviceModelAction</result>
+            <result name="error">/WEB-INF/content/admin/error.jsp</result>  
+        </action> 
+        <action name="deleteDeviceModelAction" class="com.ssh.action.admin.DeleteDeviceModelAction" method="execute">  
+            <result name="success"  type="chain">viewDeviceModelAction</result>
+            <result name="error">/WEB-INF/content/admin/error.jsp</result>  
+        </action> 
+        <action name="getDeviceModelByIdAction" class="com.ssh.action.admin.GetDeviceModelByIdAction" method="execute">  
+            <result type="stream">
+        		<param name="contentType">text/html</param>
+        		<param name="inputName">result</param>
+        	</result> 
+        </action>
+        
+        <action name="viewUserAction" class="com.ssh.action.admin.ViewUserAction" method="execute">
+        	<result name="input">/WEB-INF/content/admin/viewUser.jsp</result>
+        	<result name="success">/WEB-INF/content/admin/viewUser.jsp</result>
+        </action>
+        <action name="addUserAction" class="com.ssh.action.admin.AddUserAction" method="execute">
+        	<result name="input">/WEB-INF/content/admin/addUser.jsp</result>
+        	<result name="success"  type="chain">viewUserAction</result>
+        	<result name="error">/WEB-INF/content/admin/error.jsp</result>
+        	<result name="invalid.token">/WEB-INF/content/admin/duplicateSubmit.jsp</result> 
+        	<interceptor-ref name="defaultStack"></interceptor-ref>
+        	<interceptor-ref name="token"></interceptor-ref>
+        </action>
+        <action name="editUserAction" class="com.ssh.action.admin.EditUserAction" method="execute">
+        	<result name="input">/WEB-INF/content/admin/viewUser.jsp</result>
+        	<result name="success" type="chain" >viewUserAction</result>
+        	<result name="error">/WEB-INF/content/admin/error.jsp</result>
+        </action>
+        <action name="deleteUserAction" class="com.ssh.action.admin.DeleteUserAction" method="execute">
+        	<result name="input">/WEB-INF/content/admin/viewUser.jsp</result>
+        	<result name="success"  type="chain">viewUserAction</result>
+        	<result name="error">/WEB-INF/content/admin/error.jsp</result>
+        </action>
+        <action name="getUserByIdAction" class="com.ssh.action.admin.GetUserByIdAction" method="execute">
+        	<result type="stream">
+        		<param name="contentType">text/html</param>
+        		<param name="inputName">result</param>
+        	</result>
+        </action>
+        
+        <action name="viewOrderRecordAction" class="com.ssh.action.admin.ViewOrderRecordAction" method="execute">
+        	<result name="input">/WEB-INF/content/admin/viewOrderRecord.jsp</result>
+        	<result name="success">/WEB-INF/content/admin/viewOrderRecord.jsp</result>
+        </action>
+        <action name="addOrderRecordAction" class="com.ssh.action.admin.AddOrderRecordAction" method="execute">
+        	<result name="input">/WEB-INF/content/admin/addOrderRecord.jsp</result>
+        	<result name="success"  type="chain">viewOrderRecordAction</result>
+        	<result name="error">/WEB-INF/content/admin/error.jsp</result>
+        	<result name="invalid.token">/WEB-INF/content/admin/duplicateSubmit.jsp</result> 
+        	<interceptor-ref name="defaultStack"></interceptor-ref>
+        	<interceptor-ref name="token"></interceptor-ref>
+        </action>
+        <action name="editOrderRecordAction" class="com.ssh.action.admin.EditOrderRecordAction" method="execute">
+        	<result name="success" type="chain" >viewOrderRecordAction</result>
+        	<result name="error">/WEB-INF/content/admin/error.jsp</result>
+        </action>
+        <action name="deleteOrderRecordAction" class="com.ssh.action.admin.DeleteOrderRecordAction" method="execute">
+        	<result name="success"  type="chain">viewOrderRecordAction</result>
+        	<result name="error">/WEB-INF/content/admin/error.jsp</result>
+        </action>
+        
+        
+       	<action name="addDeviceImageAction" class="com.ssh.action.admin.AddDeviceImageAction" method="upload"> 
+        	<result name="input">/WEB-INF/content/admin/addDeviceImage.jsp</result>
+        	<result name="success"  type="chain">viewDeviceModelAction</result>
+        	<result name="error">/WEB-INF/content/admin/error.jsp</result>
+        	<result name="invalid.token">/WEB-INF/content/admin/duplicateSubmit.jsp</result>
+        	<interceptor-ref name="defaultStack"></interceptor-ref>
+        	<interceptor-ref name="token"></interceptor-ref>
+        </action>
+        <action name="viewDeviceImageAction" class="com.ssh.action.admin.ViewDeviceImageAction" method="execute"> 
+        	<result name="input">/WEB-INF/content/admin/addDeviceImage.jsp</result>
+        	<result name="success">/WEB-INF/content/admin/viewDeviceImage.jsp</result>
+        	<result name="error">/WEB-INF/content/admin/error.jsp</result>
+        </action>
+    </package>  
+</struts>  
