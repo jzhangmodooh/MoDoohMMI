@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-	Unknown Error!
+	Unknown Error!WTF!
 </body>
 </html>
